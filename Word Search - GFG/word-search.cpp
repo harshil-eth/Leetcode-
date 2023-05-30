@@ -4,27 +4,35 @@ using namespace std;
 
 // } Driver Code Ends
 class Solution {
-public:
-    bool help(vector<vector<char>> &board,string word,int i,int j,int index){
-        if(index==word.length())return true;
-        if(i<0 or j<0 or i==board.size() or j==board[0].size() or board[i][j]!=word[index])return false;
-        board[i][j]='-';
-        index++;
-        bool a=help(board,word,i+1,j,index) || help(board,word,i-1,j,index)||help(board,word,i,j+1,index)
-               ||help(board,word,i,j-1,index);
-        board[i][j]=word[index-1];
-        return a;
+private:
+
+    bool f(int i, int j, vector<vector<char>>& board, string &word, int ind) {
+        if(ind >= word.size()) return true;
+        if(i<0 || j<0 || i>=board.size() || j>=board[0].size() || board[i][j] != word[ind]) return false;
+        
+        board[i][j] = '*';
+        ind++;
+        
+        bool check = f(i,j+1,board, word, ind) || f(i+1,j,board, word, ind) || f(i,j-1,board, word, ind) || f(i-1,j,board, word, ind);
+        
+        //backtrack
+        board[i][j] = word[ind-1];
+        return check;
     }
+
+public:
     bool isWordExist(vector<vector<char>>& board, string word) {
         // Code here
-        for(int i=0;i<board.size();i++){
-            for(int j=0;j<board[0].size();j++){
-                if(board[i][j]==word[0]){
-                    bool a = help(board,word,i,j,0);
-                    if(a)return a;
+        int n=board.size(), m=board[0].size();
+        for(int i=0;i<n;i++) {
+            for(int j=0;j<m;j++) {
+                if(board[i][j] == word[0]) {
+                    bool ans = f(i, j, board, word, 0);
+                    if(ans) return ans;
                 }
             }
         }
+        
         return false;
     }
 };
