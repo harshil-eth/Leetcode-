@@ -34,24 +34,45 @@ class Solution{
         // return f(n-1, n, val, dp);
         
         int wt = n;
-        vector<vector<int>> dp(n, vector<int> (n+1, 0));
+        // vector<vector<int>> dp(n, vector<int> (n+1, 0));
+        // for(int j=0;j<n+1;j++) {
+        //     dp[0][j] = j*val[0];
+        // }
+        
+        // for(int i=1;i<n;i++) {
+        //     for(int j=0;j<wt+1;j++) {
+        //         int notpick = 0 + dp[i-1][j];
+        //         int pick = -1e8;
+        //         int rod = i+1;
+        //         if(rod <= j) 
+        //             pick = val[i] + dp[i][j-rod];
+                    
+        //         dp[i][j] = max(pick, notpick);
+        //     }
+        // }
+        
+        // return dp[n-1][wt];
+        
+        
+        vector<int> prev(wt+1, 0), curr(wt+1, 0);
         for(int j=0;j<n+1;j++) {
-            dp[0][j] = j*val[0];
+            prev[j] = j*val[0];
         }
         
         for(int i=1;i<n;i++) {
             for(int j=0;j<wt+1;j++) {
-                int notpick = 0 + dp[i-1][j];
+                int notpick = 0 + prev[j];
                 int pick = -1e8;
                 int rod = i+1;
                 if(rod <= j) 
-                    pick = val[i] + dp[i][j-rod];
+                    pick = val[i] + curr[j-rod];
                     
-                dp[i][j] = max(pick, notpick);
+                curr[j] = max(pick, notpick);
             }
+            prev = curr;
         }
         
-        return dp[n-1][wt];
+        return prev[wt];
     }
 };
 
