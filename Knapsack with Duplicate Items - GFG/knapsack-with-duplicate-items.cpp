@@ -34,23 +34,42 @@ public:
         // vector<vector<int>> dp(n, vector<int> (w+1, -1));
         // return f(n-1, w, val, wt, dp);
     
-        vector<vector<int>> dp(n, vector<int> (w+1, 0));
+        // vector<vector<int>> dp(n, vector<int> (w+1, 0));
+        // for(int j=wt[0];j<w+1;j++) {
+        //     dp[0][j] = ((j/wt[0])*(val[0]));
+        // }
+        
+        // for(int i=1;i<n;i++) {
+        //     for(int j=0;j<w+1;j++) {
+        //         int notpick = 0 + dp[i-1][j];
+        //         int pick = -1e9;
+        //         if(wt[i] <= j) 
+        //             pick = val[i] + dp[i][j-wt[i]];
+                    
+        //         dp[i][j] = max(pick, notpick);
+        //     }
+        // }
+        
+        // return dp[n-1][w];
+        
+        vector<int> prev(w+1, 0), curr(w+1, 0);
         for(int j=wt[0];j<w+1;j++) {
-            dp[0][j] = ((j/wt[0])*(val[0]));
+            prev[j] = ((j/wt[0])*(val[0]));
         }
         
         for(int i=1;i<n;i++) {
             for(int j=0;j<w+1;j++) {
-                int notpick = 0 + dp[i-1][j];
+                int notpick = 0 + prev[j];
                 int pick = -1e9;
                 if(wt[i] <= j) 
-                    pick = val[i] + dp[i][j-wt[i]];
+                    pick = val[i] + curr[j-wt[i]];
                     
-                dp[i][j] = max(pick, notpick);
+                curr[j] = max(pick, notpick);
             }
+            prev = curr;
         }
         
-        return dp[n-1][w];
+        return prev[w];
     }
 };
 
