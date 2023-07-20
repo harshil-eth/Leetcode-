@@ -8,8 +8,8 @@ using namespace std;
 // User function Template for C++
 
 class Solution {
-  private:
-    
+private:
+
     void dfs(int row, int col, vector<vector<int>>& grid, vector<vector<int> > &vis, 
                 vector<pair<int, int> > &vec, int row0, int col0) {
         int n=grid.size();
@@ -32,22 +32,23 @@ class Solution {
         }
         
     }
-    
+
   public:
     int countDistinctIslands(vector<vector<int>>& grid) {
         // code here
         int n=grid.size();
         int m=grid[0].size();
         
-        vector<vector<int> > vis(n, vector<int> (m,0));
-        set<vector<pair<int, int> > > s;
+        vector<vector<int>> vis(n, vector<int> (m, 0));
+        set<vector<pair<int, int>>> s;
         
-        for(int i=0;i<n;i++) {
-            for(int j=0;j<m;j++) {
+        for(int i=0; i<n; i++) {
+            for(int j=0; j<m; j++) {
                 if(!vis[i][j] && grid[i][j] == 1) {
-                    vector<pair<int, int> > vec;
-                    dfs(i,j,grid,vis,vec,i,j);
-                    s.insert(vec);
+                    
+                    vector<pair<int, int>> v;
+                    dfs(i, j, grid, vis, v, i, j);
+                    s.insert(v);
                 }
             }
         }
