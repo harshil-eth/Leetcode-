@@ -17,13 +17,11 @@ public:
 	        }
 	    }
 	    
-	    int i=0,j=n-1;
-        while (i<=j)
-        {
-            swap(arr[i],arr[j]);
-            i++;
-            j--;
-        }
+	    for(int i=0; i<n/2; i++) {
+	        for(int j=0; j<n; j++) {
+	            swap(arr[i][j], arr[n-i-1][j]);
+	        }
+	    }
 	}
 
 };
