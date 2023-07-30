@@ -31,31 +31,28 @@ public:
 
 class Solution {
     private:
-    int f(int ind, int buy, vector<int> &prices, vector<vector<int>> &dp) {
-        if(ind >= prices.size()) 
+    int f(int ind, int buy, vector<int> &nums, vector<vector<int>> &dp) {
+        if(ind >= nums.size()) 
             return 0;
         if(dp[ind][buy] != -1)
             return dp[ind][buy];
-
-        int profit = 0;
+            
+        int p = 0;
         if(buy) {
-            profit = max(-prices[ind]+f(ind+1, 0, prices, dp), 
-                            0 + f(ind+1, 1, prices, dp));
+            p = max(-nums[ind] + f(ind+1, 0, nums, dp), f(ind+1, 1, nums, dp));
         }
         else {
-            profit = max(+prices[ind]+f(ind+1, 1, prices, dp), 
-                            0 + f(ind+1, 0, prices, dp));
+            p = max(+nums[ind] + f(ind+1, 1, nums, dp), f(ind+1, 0, nums, dp));
         }
-        return dp[ind][buy] = profit;
+        
+        return dp[ind][buy] = p;
     }
     
   public:
     int stockBuyAndSell(int n, vector<int> &prices) {
         // code here
-        // int n=prices.size();
         vector<vector<int>> dp(n, vector<int> (2, -1));
         return f(0, 1, prices, dp);
-
     }
 };
 
