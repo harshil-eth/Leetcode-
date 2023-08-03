@@ -7,19 +7,6 @@ using namespace std;
 // } Driver Code Ends
 // User function Template for C++
 class Solution {
-private:
-    void topo(int node, vector<int> &vis, stack<int> &st, vector<pair<int, int>> adj[]) {
-        vis[node] = 1;
-        for(auto it:adj[node]) {
-            int v = it.first;
-            if(!vis[v]) {
-                topo(v, vis, st, adj);
-            }
-        }
-        
-        st.push(node);
-    }
-
   public:
      vector<int> shortestPath(int n,int m, vector<vector<int>>& edges){
         // code here
@@ -28,30 +15,25 @@ private:
             adj[it[0]].push_back({it[1], it[2]});
         }
         
-        vector<int> vis(n);
-        stack<int> st;
-        for(int i=0; i<n; i++) {
-            if(!vis[i]) {
-                topo(i, vis, st, adj);
-            }
-        }
-        
-        //stack is ready
-        
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
         vector<int> dist(n, 1e9);
+        
         dist[0] = 0;
-        while(!st.empty()) {
-            int node = st.top();
-            st.pop();
+        pq.push({0, 0});
+        
+        while(!pq.empty()) {
+            auto it = pq.top();
+            pq.pop();
+            int node = it.second;
+            int dis = it.first;
             
-            if(dist[node] != 1e9) {
-                for(auto it:adj[node]) {
-                    int edgeW = it.second;
-                    int adjNode = it.first;
-                    
-                    if(dist[node]+ edgeW < dist[adjNode]) {
-                        dist[adjNode] = dist[node] + edgeW;
-                    }
+            for(auto it:adj[node]) {
+                int adjNode = it.first;
+                int edgeW = it.second;
+                
+                if(dis + edgeW < dist[adjNode]) {
+                    dist[adjNode] = dis + edgeW;
+                    pq.push({dist[adjNode], adjNode});
                 }
             }
         }
@@ -59,8 +41,7 @@ private:
         for(int i=0; i<n; i++) {
             if(dist[i] == 1e9) dist[i] = -1;
         }
-       
-       
+        
         return dist;
     }
 };
