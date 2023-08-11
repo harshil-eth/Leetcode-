@@ -7,28 +7,31 @@ using namespace std;
 // } Driver Code Ends
 // User function Template for C++
 
-class Solution{
-    private:
+class Solution {
+private:
     int f(int n) {
-    int x = 0;
-    while( (1<<x) <= n ) {
-        x++;
+        int x = 0;
+        while(1<<x <= n) {
+            x++;
+        }
+        return x-1;
     }
-    return x-1;
-}
+
 public:
     int countBits(int n){
         // code here
-        int mod = 1e9+7;
-    // Write your code here
-    if(n == 0) return 0;
-    
-    int x = f(n); //highest power of 2
-    int a = (x * (1<<x-1)) ;
-    int b = (n - (1<<x) + 1) ;
-    int rest = n - (1<<x);
-    int ans = (a + b+ countBits(rest));
-    return ans;
+        int ans = 0;
+        int x = f(n);
+        
+        if(n == 0) return 0;
+        
+        int a = (x* (1<<x-1));
+        int b = n - (1<<x) + 1;
+        
+        int rest = n - (1<<x);
+        
+        ans = a + b + countBits(rest);
+        return ans;
     }
 };
 
