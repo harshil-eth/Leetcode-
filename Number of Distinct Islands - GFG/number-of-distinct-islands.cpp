@@ -8,52 +8,48 @@ using namespace std;
 // User function Template for C++
 
 class Solution {
-private:
-
-    void dfs(int row, int col, vector<vector<int>>& grid, vector<vector<int> > &vis, 
-                vector<pair<int, int> > &vec, int row0, int col0) {
-        int n=grid.size();
-        int m=grid[0].size();
+    private:
+    void dfs(int r, int c, vector<vector<int>> &grid, vector<vector<int>> &vis, vector<pair<int, int>> &v, int r0, int c0) {
+        int n = grid.size();
+        int m = grid[0].size();
         
-        vis[row][col] = 1;
-        // storing base coordinates
-        vec.push_back({row-row0, col-col0}); //row0 and col0 are base coordinates
+        vis[r][c] = 1;
+        v.push_back({r-r0, c-c0});
         
-        int delrow[] = {-1,0,1,0};
-        int delcol[] = {0,1,0,-1};
+        int dr[] = {0,1,0,-1};
+        int dc[] = {1,0,-1,0};
         
-        for(int i=0;i<4;i++) {
-            int nrow = row + delrow[i];
-            int ncol = col + delcol[i];
+        for(int i=0; i<4; i++) {
+            int nr = r+dr[i];
+            int nc = c + dc[i];
             
-            if(nrow>=0 and nrow<n and ncol>=0 and ncol<m && !vis[nrow][ncol] && grid[nrow][ncol] == 1) {
-                dfs(nrow,ncol,grid,vis,vec,row0,col0);
+            if(nr>=0 && nr<n && nc>=0 && nc<m && !vis[nr][nc] && grid[nr][nc] == 1) {
+                dfs(nr, nc, grid, vis, v, r0, c0);
             }
         }
-        
     }
-
+    
   public:
     int countDistinctIslands(vector<vector<int>>& grid) {
         // code here
-        int n=grid.size();
-        int m=grid[0].size();
+        int n = grid.size();
+        int m = grid[0].size();
         
         vector<vector<int>> vis(n, vector<int> (m, 0));
-        set<vector<pair<int, int>>> s;
+        set<vector<pair<int, int>>> st;
         
         for(int i=0; i<n; i++) {
             for(int j=0; j<m; j++) {
-                if(!vis[i][j] && grid[i][j] == 1) {
+                if(grid[i][j] == 1 && !vis[i][j]) {
                     
                     vector<pair<int, int>> v;
                     dfs(i, j, grid, vis, v, i, j);
-                    s.insert(v);
+                    st.insert(v);
                 }
             }
         }
         
-        return s.size();
+        return st.size();
     }
 };
 
