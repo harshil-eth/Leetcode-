@@ -40,6 +40,7 @@ class Solution
      return (n*mx-total);    } 
 };
 
+
 //{ Driver Code Starts.
 int main()
 {
