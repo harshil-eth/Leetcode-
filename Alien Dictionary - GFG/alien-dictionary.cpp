@@ -9,31 +9,34 @@ using namespace std;
 
 class Solution{
     private:
-    vector<int> getTopo (int V, vector<int> adj[]) {
+    vector<int> f(vector<int> adj[], int k) {
         
-        int indegree[V] = {0};
-        for(int i=0;i<V;i++) {
-            for(auto it:adj[i]) {
+        vector<int> indegree(k, 0);
+        vector<int> ans;
+        
+        for(int i=0; i<k; i++) {
+            for(auto it: adj[i]) {
                 indegree[it]++;
             }
         }
         
         queue<int> q;
-        for(int i=0;i<V;i++) {
+        for(int i=0; i<k; i++) {
             if(indegree[i] == 0) q.push(i);
         }
         
-        vector<int> ans;
         while(!q.empty()) {
-            int node = q.front();
+            auto node = q.front();
             q.pop();
+            
             ans.push_back(node);
             
-            for(auto it:adj[node]) {
+            for(auto it: adj[node]) {
                 indegree[it]--;
                 if(indegree[it] == 0) q.push(it);
             }
         }
+        
         
         return ans;
     }
@@ -41,29 +44,29 @@ class Solution{
     public:
     string findOrder(string dict[], int n, int k) {
         //code here
+        
         vector<int> adj[k];
-        for(int i=0;i<n-1;i++) {
-            string s1 = dict[i];
-            string s2 = dict[i+1];
-            int len = min(s1.size(), s2.size());
-            int ptr=0;
-            while(ptr<len) {
-                if(s1[ptr] != s2[ptr]) {
-                    adj[s1[ptr]-'a'].push_back(s2[ptr]-'a');
+        for(int i=0; i<n-1; i++) {
+            string a = dict[i];
+            string b = dict[i+1];
+            int len = min(a.size(), b.size());
+            int ptr = 0;
+            while(ptr < len) {
+                if(a[ptr] != b[ptr]) {
+                    adj[a[ptr]-'a'].push_back(b[ptr]-'a');
                     break;
                 }
                 else ptr++;
             }
         }
         
-        vector<int> topo = getTopo(k, adj);
+        vector<int> topo = f(adj, k);
         
-        string ans="";
-        for(int i=0;i<k;i++) {
-            ans = ans + char(topo[i] + 'a');
+        string ans = "";
+        for(int i=0; i<k; i++) {
+            ans += char(topo[i] + 'a');
         }
         return ans;
-        
     }
 };
 
