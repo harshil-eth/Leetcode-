@@ -11,28 +11,29 @@ class Solution
     int maxMeetings(int start[], int end[], int n)
     {
         // Your code here
-        vector<pair<pair<int, int>, int>> arr;
+        vector<pair<int, int>> arr;
         for(int i=0; i<n; i++) {
-            arr.push_back({{start[i], end[i]}, i+1});
+            arr.push_back({start[i], end[i]});
         }
         
-        sort(arr.begin(), arr.end(), [] (const pair<pair<int, int>, int> &a, const pair<pair<int, int>, int> &b) {
-            return a.first.second < b.first.second;
+        sort(arr.begin(), arr.end(), [] (const pair<int, int> &a, const pair<int, int> &b) {
+            return a.second < b.second;
         });
-        //sorted acc to ending time
         
-        int ansEnd = arr[0].first.second;
-        vector<int> res;
-        res.push_back(arr[0].second);
-        
+        int ans = 1;
+        int s = arr[0].first;
+        int e = arr[0].second;
         for(int i=1; i<n; i++) {
-            if(arr[i].first.first > ansEnd) {
-                res.push_back(arr[i].second);
-                ansEnd = arr[i].first.second;
+            if(arr[i].first <= e) {
+                continue;
+            }
+            else {
+                ans++;
+                e = arr[i].second;
             }
         }
         
-        return res.size();
+        return ans;
     }
 };
 
