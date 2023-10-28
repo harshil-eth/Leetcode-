@@ -9,46 +9,42 @@ using namespace std;
 
 class Solution{
     private:
-    vector<int> f(vector<int> adj[], int k) {
-        
-        vector<int> indegree(k, 0);
-        vector<int> ans;
-        
-        for(int i=0; i<k; i++) {
+    vector<int> f(vector<int> adj[], int n) {
+        queue<int> q;
+        vector<int> indegree(n, 0);
+        for(int i=0; i<n; i++) {
             for(auto it: adj[i]) {
                 indegree[it]++;
             }
         }
         
-        queue<int> q;
-        for(int i=0; i<k; i++) {
+        for(int i=0; i<n; i++) {
             if(indegree[i] == 0) q.push(i);
         }
         
+        vector<int> ans;
         while(!q.empty()) {
             auto node = q.front();
             q.pop();
             
             ans.push_back(node);
-            
             for(auto it: adj[node]) {
                 indegree[it]--;
                 if(indegree[it] == 0) q.push(it);
             }
         }
         
-        
         return ans;
     }
     
     public:
-    string findOrder(string dict[], int n, int k) {
+    string findOrder(string dic[], int n, int k) {
         //code here
-        
         vector<int> adj[k];
+        
         for(int i=0; i<n-1; i++) {
-            string a = dict[i];
-            string b = dict[i+1];
+            string a = dic[i];
+            string b = dic[i+1];
             int len = min(a.size(), b.size());
             int ptr = 0;
             while(ptr < len) {
@@ -66,6 +62,7 @@ class Solution{
         for(int i=0; i<k; i++) {
             ans += char(topo[i] + 'a');
         }
+        
         return ans;
     }
 };
